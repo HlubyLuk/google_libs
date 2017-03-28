@@ -62,7 +62,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.b2:
                 if (BuildConfig.DEBUG) Log.d(TAG, "click: B2!!!");
-                this.co.removeViewAt(this.co.getFlexItemCount() - 1);
+                int flexItemCount = this.co.getFlexItemCount();
+                if (flexItemCount > 0)
+                    this.co.removeViewAt(flexItemCount - 1);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown view click");
