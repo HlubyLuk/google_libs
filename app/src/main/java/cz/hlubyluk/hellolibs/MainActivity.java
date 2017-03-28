@@ -1,6 +1,7 @@
 package cz.hlubyluk.hellolibs;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
@@ -55,14 +57,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void click(View view) {
+        int flexItemCount = this.co.getFlexItemCount();
         switch (view.getId()) {
             case R.id.b1:
-                if (BuildConfig.DEBUG) Log.d(TAG, "click: B1!!!");
-                this.co.addView(new ViewRandom(this));
+                ViewRandom child = new ViewRandom(this);
+                this.co.addView(child);
+                //
+                Resources resources = this.getResources();
+                int size = resources.getDimensionPixelSize(R.dimen.size);
+                FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(size, size);
+                if (flexItemCount >= 2 && flexItemCount % 3 == 0)
+                    params.setWrapBefore(true);
+                child.setLayoutParams(params);
+                if (BuildConfig.DEBUG) Log.d(TAG, "click: size->" + size);
                 break;
             case R.id.b2:
                 if (BuildConfig.DEBUG) Log.d(TAG, "click: B2!!!");
-                int flexItemCount = this.co.getFlexItemCount();
                 if (flexItemCount > 0)
                     this.co.removeViewAt(flexItemCount - 1);
                 break;
